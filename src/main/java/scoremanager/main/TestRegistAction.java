@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bean.School;
-import bean.Score;
+import bean.Test;
 import bean.Subject;
 import bean.Teacher;
 import dao.ClassNumDao;
@@ -88,7 +88,7 @@ public class TestRegistAction extends Action {
         Subject subject = subjectDao.get(subjectCd);
 
         // scoresは必ずセット（空リストでもJSPで入力エリアを表示するため）
-        List<Score> scores = new ArrayList<>();
+        List<Test> scores = new ArrayList<>();
         if (subject != null) {
             scores = scoreDao.filter(school, entYear, classNum, subject, no);
         }

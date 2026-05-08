@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import bean.School;
-import bean.Score;
+import bean.Test;
 import bean.Subject;
 import bean.Teacher;
 import dao.ClassNumDao;
@@ -48,13 +48,13 @@ public class TestRegistExecuteAction extends Action {
         Subject subject = subjectDao.get(subjectCd);
 
         // 対象学生一覧を取得（成績リストはScoreDaoから）
-        List<Score> scores = scoreDao.filter(school, entYear, classNum, subject, no);
+        List<Test> scores = scoreDao.filter(school, entYear, classNum, subject, no);
 
         // バリデーション 4：各学生の点数を個別にチェック（代替フロー②）
         // エラーはstudentNo→エラーメッセージのMapで管理
         Map<String, String> pointErrors = new HashMap<>();
 
-        for (Score score : scores) {
+        for (Test score : scores) {
             String studentNo = score.getStudent().getStudentNo();
             String pointStr  = req.getParameter("point_" + studentNo);
 
@@ -79,7 +79,7 @@ public class TestRegistExecuteAction extends Action {
             // 入力値を保持したままJSPに戻す（代替フロー②-2：基本フロー⑤へ）
 
             // 入力値をscoresに上書き（入力値を保持して再表示）
-            for (Score score : scores) {
+            for (Test score : scores) {
                 String studentNo = score.getStudent().getStudentNo();
                 String pointStr  = req.getParameter("point_" + studentNo);
                 if (pointStr != null && !pointStr.trim().isEmpty()) {
@@ -114,7 +114,7 @@ public class TestRegistExecuteAction extends Action {
         }
 
         // DBへ登録 5：エラーがなければ全学生の点数を一括保存（基本フロー⑦）
-        for (Score score : scores) {
+        for (Test score : scores) {
             String studentNo = score.getStudent().getStudentNo();
             String pointStr  = req.getParameter("point_" + studentNo);
 

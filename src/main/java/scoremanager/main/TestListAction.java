@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import bean.Score;
+import bean.Test;
 import bean.Student;
 import bean.Teacher;
 import dao.TestDao;
@@ -36,7 +36,7 @@ public class TestListAction extends Action {
         List<Student> students = studentDao.filter(teacher.getSchool(), true);
 
         // ビジネスロジック 4
-        List<Score> scores = null;
+        List<Test> scores = null;
         Student selectedStudent = null;
 
         if (studentNo != null && !studentNo.trim().isEmpty()) {

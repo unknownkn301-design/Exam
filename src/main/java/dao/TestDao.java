@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bean.School;
-import bean.Score;
+import bean.Test;
 import bean.Student;
 import bean.Subject;
 
@@ -17,9 +17,9 @@ public class TestDao extends Dao {
     /**
      * 学生・科目・回数で成績を1件取得する
      */
-    public Score get(Student student, Subject subject, int no) throws Exception {
+    public Test get(Student student, Subject subject, int no) throws Exception {
 
-        Score score = null;
+        Test score = null;
         Connection connection = getConnection();
         PreparedStatement statement = null;
 
@@ -33,7 +33,7 @@ public class TestDao extends Dao {
             ResultSet rSet = statement.executeQuery();
 
             if (rSet.next()) {
-                score = new Score();
+                score = new Test();
                 score.setStudent(student);
                 score.setSubject(subject);
                 score.setPoint(rSet.getInt("point"));
@@ -58,9 +58,9 @@ public class TestDao extends Dao {
      * 入学年度・クラス・科目・回数で学生一覧と成績をまとめて取得する
      * 未登録の学生も含めてLEFT JOINで返す
      */
-    public List<Score> filter(School school, int entYear, String classNum, Subject subject, int no) throws Exception {
+    public List<Test> filter(School school, int entYear, String classNum, Subject subject, int no) throws Exception {
 
-        List<Score> list = new ArrayList<>();
+        List<Test> list = new ArrayList<>();
         Connection connection = getConnection();
         PreparedStatement statement = null;
 
@@ -89,7 +89,7 @@ public class TestDao extends Dao {
             ResultSet rSet = statement.executeQuery();
 
             while (rSet.next()) {
-                Score score = new Score();
+                Test score = new Test();
 
                 Student student = new Student();
                 student.setStudentNo(rSet.getString("student_no"));
@@ -128,14 +128,14 @@ public class TestDao extends Dao {
     /**
      * 成績を1件登録・更新する
      */
-    public boolean save(Score score) throws Exception {
+    public boolean save(Test score) throws Exception {
 
         Connection connection = getConnection();
         PreparedStatement statement = null;
         int count = 0;
 
         try {
-            Score old = get(score.getStudent(), score.getSubject(), score.getNo());
+            Test old = get(score.getStudent(), score.getSubject(), score.getNo());
 
             if (old == null) {
                 statement = connection.prepareStatement(
@@ -174,9 +174,9 @@ public class TestDao extends Dao {
         return count > 0;
     }
     
-    public List<Score> filter(Student student, School school) throws Exception {
+    public List<Test> filter(Student student, School school) throws Exception {
 
-        List<Score> list = new ArrayList<>();
+        List<Test> list = new ArrayList<>();
 
         Connection connection = getConnection();
 
@@ -191,7 +191,7 @@ public class TestDao extends Dao {
 
         while (rSet.next()) {
 
-            Score score = new Score();
+            Test score = new Test();
 
             score.setStudent(student);
             score.setNo(rSet.getInt("no"));

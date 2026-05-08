@@ -6,7 +6,7 @@ import java.io.Serializable;
  * 成績情報を表す Bean クラス
  * テーブル: test (STUDENT_NO, SCHOOL_CD, SUBJECT_CD, NO, POINT, CLASS_NUM)
  */
-public class Score implements Serializable {
+public class Test implements Serializable {
 
     /** 回数（試験の第何回目か） */
     private int no;
