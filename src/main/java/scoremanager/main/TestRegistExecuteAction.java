@@ -10,7 +10,7 @@ import bean.Score;
 import bean.Subject;
 import bean.Teacher;
 import dao.ClassNumDao;
-import dao.ScoreDao;
+import dao.TestDao;
 import dao.StudentDao;
 import dao.SubjectDao;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,7 +32,7 @@ public class TestRegistExecuteAction extends Action {
         Teacher teacher = (Teacher) session.getAttribute("user");
         School school = teacher.getSchool();
 
-        ScoreDao scoreDao = new ScoreDao();
+        TestDao scoreDao = new TestDao();
         StudentDao studentDao = new StudentDao();
         SubjectDao subjectDao = new SubjectDao();
         ClassNumDao classNumDao = new ClassNumDao();

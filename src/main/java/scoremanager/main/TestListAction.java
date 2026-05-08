@@ -7,7 +7,7 @@ import java.util.Map;
 import bean.Score;
 import bean.Student;
 import bean.Teacher;
-import dao.ScoreDao;
+import dao.TestDao;
 import dao.StudentDao;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,7 +26,7 @@ public class TestListAction extends Action {
         HttpSession session = req.getSession();
         Teacher teacher = (Teacher) session.getAttribute("user");
         StudentDao studentDao = new StudentDao();
-        ScoreDao scoreDao = new ScoreDao();
+        TestDao scoreDao = new TestDao();
         Map<String, String> errors = new HashMap<>();
 
         // リクエストパラメーターの取得 2

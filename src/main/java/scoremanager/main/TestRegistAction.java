@@ -9,7 +9,7 @@ import bean.Score;
 import bean.Subject;
 import bean.Teacher;
 import dao.ClassNumDao;
-import dao.ScoreDao;
+import dao.TestDao;
 import dao.SubjectDao;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,7 +32,7 @@ public class TestRegistAction extends Action {
 
         ClassNumDao classNumDao = new ClassNumDao();
         SubjectDao subjectDao = new SubjectDao();
-        ScoreDao scoreDao = new ScoreDao();
+        TestDao scoreDao = new TestDao();
 
         // 入学年度の選択肢を生成（10年前〜今年）
         int year = LocalDate.now().getYear();

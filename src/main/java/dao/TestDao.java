@@ -12,7 +12,7 @@ import bean.Score;
 import bean.Student;
 import bean.Subject;
 
-public class ScoreDao extends Dao {
+public class TestDao extends Dao {
 
     /**
      * 学生・科目・回数で成績を1件取得する
