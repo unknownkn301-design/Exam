@@ -64,7 +64,7 @@ public class TestListSubjectExecuteAction extends Action {
 
         if (!submitted) {
             // 初回アクセス：エラーなしでフォームだけ表示
-            req.getRequestDispatcher("test_list_subject.jsp").forward(req, res);
+            req.getRequestDispatcher("test_list.jsp").forward(req, res);
             return;
         }
 
@@ -75,7 +75,7 @@ public class TestListSubjectExecuteAction extends Action {
         if (f1Empty || f2Empty || f3Empty) {
             // フォーム送信後に未選択項目がある場合
             req.setAttribute("errorMsg", "入学年度とクラスと科目を選択してください。");
-            req.getRequestDispatcher("test_list_subject.jsp").forward(req, res);
+            req.getRequestDispatcher("test_list.jsp").forward(req, res);
             return;
         }
 
@@ -91,7 +91,7 @@ public class TestListSubjectExecuteAction extends Action {
         // 学生が存在しない場合
         if (tests1.isEmpty()) {
             req.setAttribute("errorMsg", "学生情報が存在しませんでした。");
-            req.getRequestDispatcher("test_list_subject.jsp").forward(req, res);
+            req.getRequestDispatcher("test_list.jsp").forward(req, res);
             return;
         }
 
@@ -102,6 +102,6 @@ public class TestListSubjectExecuteAction extends Action {
         req.setAttribute("entYear", entYear);
 
         // JSPへフォワード 7
-        req.getRequestDispatcher("test_list_subject.jsp").forward(req, res);
+        req.getRequestDispatcher("test_list.jsp").forward(req, res);
     }
 }
