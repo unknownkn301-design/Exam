@@ -82,6 +82,7 @@
                                             <th>学生番号</th>
                                             <th>氏名</th>
                                             <th>点数</th>
+                                            <th></th> 
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -105,6 +106,12 @@
                                                         </div>
                                                     </c:if>
                                                 </td>
+                                                 <td>
+									                <c:if test="${score.registered}">
+									                    <a href="TestDelete.action?no=${score.no}"
+									                       class="btn btn-danger btn-sm">削除</a>
+									                </c:if>
+									            </td>
                                             </tr>
                                         </c:forEach>
                                     </tbody>

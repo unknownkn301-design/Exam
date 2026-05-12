@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bean.School;
-import bean.Test;
 import bean.Student;
 import bean.Subject;
+import bean.Test;
 
 public class TestDao extends Dao {
 
@@ -204,5 +204,64 @@ public class TestDao extends Dao {
         connection.close();
 
         return list;
+    }
+    
+    
+ // noだけで1件取得
+    public Test get(int no) throws Exception {
+
+        Test test = null;
+        Connection connection = getConnection();
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(
+                "SELECT * FROM test WHERE no = ?");
+            statement.setInt(1, no);
+            ResultSet rSet = statement.executeQuery();
+
+            if (rSet.next()) {
+                test = new Test();
+                test.setNo(rSet.getInt("no"));
+                test.setPoint(rSet.getInt("point"));
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (statement != null) {
+                try { statement.close(); } catch (SQLException sqle) { throw sqle; }
+            }
+            if (connection != null) {
+                try { connection.close(); } catch (SQLException sqle) { throw sqle; }
+            }
+        }
+        return test;
+    }
+    
+
+    // noとschoolで削除
+    public boolean delete(int no, School school) throws Exception {
+
+        Connection connection = getConnection();
+        PreparedStatement statement = null;
+        int count = 0;
+
+        try {
+            statement = connection.prepareStatement(
+                "DELETE FROM test WHERE no = ? AND school_cd = ?");
+            statement.setInt(1, no);
+            statement.setString(2, school.getSchoolCd());
+            count = statement.executeUpdate();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (statement != null) {
+                try { statement.close(); } catch (SQLException sqle) { throw sqle; }
+            }
+            if (connection != null) {
+                try { connection.close(); } catch (SQLException sqle) { throw sqle; }
+            }
+        }
+        return count > 0;
     }
 }
