@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import bean.School;
-import bean.Test;
 import bean.Subject;
 import bean.Teacher;
+import bean.Test;
 import dao.ClassNumDao;
-import dao.TestDao;
 import dao.StudentDao;
 import dao.SubjectDao;
+import dao.TestDao;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -58,21 +58,22 @@ public class TestRegistExecuteAction extends Action {
             String studentNo = score.getStudent().getStudentNo();
             String pointStr  = req.getParameter("point_" + studentNo);
 
+            // 未入力もエラーにする
             if (pointStr == null || pointStr.trim().isEmpty()) {
-                // 未入力はスキップ（登録しない）
+                pointErrors.put(studentNo, "0〜100の数字を入力してください");
                 continue;
             }
 
             try {
                 int point = Integer.parseInt(pointStr.trim());
                 if (point < 0 || point > 100) {
-                    // 代替フロー②-1：範囲外の場合、その入力欄にエラーを記録
                     pointErrors.put(studentNo, "0〜100の範囲で入力してください");
                 }
             } catch (NumberFormatException e) {
                 pointErrors.put(studentNo, "0〜100の範囲で入力してください");
             }
         }
+
 
         if (!pointErrors.isEmpty()) {
             // 代替フロー②-1：エラーがある入力欄の横にメッセージを表示
