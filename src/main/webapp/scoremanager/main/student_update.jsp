@@ -83,8 +83,8 @@
 
                 <%-- ボタン --%>
                 <div class="d-flex gap-3 align-items-center">
-                    <button type="submit" class="btn btn-primary px-4">変更を保存</button>
-                    <a href="StudentList.action" class="btn btn-outline-secondary">キャンセル</a>
+                    <button type="submit" class="btn btn-primary px-4">変更</button>
+                    <a href="StudentList.action" class="btn btn-outline-secondary">戻る</a>
                 </div>
             </form>
         </section>
