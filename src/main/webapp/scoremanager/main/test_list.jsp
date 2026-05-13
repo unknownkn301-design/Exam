@@ -78,7 +78,7 @@
             </c:if>
 
             <%-- ===== 科目別成績テーブル (GRMR002) ===== --%>
-            <c:if test="${not empty tests1}">
+            <c:if test="${not empty testListSubjects}">
                 <div class="px-4 mb-1 fw-semibold">科目：${subject.subjectName}</div>
                 <table class="table table-hover mx-3" style="width:calc(100% - 2rem);">
                     <tr>
@@ -89,19 +89,18 @@
                         <th>1回</th>
                         <th>2回</th>
                     </tr>
-                    <c:forEach var="t1" items="${tests1}" varStatus="status">
-                        <c:set var="t2" value="${tests2[status.index]}" />
+                    <c:forEach var="row" items="${testListSubjects}">
                         <tr>
-                            <td>${t1.student.entYear}</td>
-                            <td>${t1.student.classNum}</td>
-                            <td>${t1.student.studentNo}</td>
-                            <td>${t1.student.studentName}</td>
+                            <td>${row.entYear}</td>
+                            <td>${row.classNum}</td>
+                            <td>${row.studentNo}</td>
+                            <td>${row.studentName}</td>
                             <td><c:choose>
-                                <c:when test="${t1.registered}">${t1.point}</c:when>
+                                <c:when test="${not empty row.points[1]}">${row.points[1]}</c:when>
                                 <c:otherwise>-</c:otherwise>
                             </c:choose></td>
                             <td><c:choose>
-                                <c:when test="${t2.registered}">${t2.point}</c:when>
+                                <c:when test="${not empty row.points[2]}">${row.points[2]}</c:when>
                                 <c:otherwise>-</c:otherwise>
                             </c:choose></td>
                         </tr>
@@ -125,11 +124,11 @@
                                 </tr>
                                 <c:forEach var="score" items="${scores}">
                                     <tr>
-                                        <td>${score.subject.subjectCd}</td>
-                                        <td>${score.subject.subjectName}</td>
-                                        <td class="text-end">${score.no}回</td>
+                                        <td>${score.subjectCd}</td>
+                                        <td>${score.subjectName}</td>
+                                        <td class="text-end">${score.num}回</td>
                                         <td class="text-end">${score.point} 点</td>
-                                        <td><a href="TestRegist.action?student_no=${score.student.studentNo}&subject_cd=${score.subject.subjectCd}">修正</a></td>
+                                        <td><a href="TestRegist.action?student_no=${selected_student.studentNo}&subject_cd=${score.subjectCd}">修正</a></td>
                                     </tr>
                                 </c:forEach>
                             </table>

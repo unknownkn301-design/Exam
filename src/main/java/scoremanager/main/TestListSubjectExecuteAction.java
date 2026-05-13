@@ -6,19 +6,23 @@ import java.util.List;
 
 import bean.Subject;
 import bean.Teacher;
-import bean.Test;
+import bean.TestListSubject;
 import dao.ClassNumDao;
 import dao.SubjectDao;
-import dao.TestDao;
+import dao.TestListSubjectDao;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import tool.Action;
 
 /**
- * 科目別成績一覧 検索実行アクション
+ * 科目別成績一覧 検索実行アクション (GRMR002)
  * URL: TestListSubjectExecute.action
  * パラメーター: f1=入学年度, f2=クラス番号, f3=科目コード
+ *
+ * <p>リファクタリング: TestDao の直接利用（tests1/tests2 の二重取得）を廃止し、
+ * {@link TestListSubjectDao} + {@link bean.TestListSubject} を使用するよう変更。
+ * 試験回数は TestListSubject.points に集約されるため、DB アクセスが1回に削減される。
  */
 public class TestListSubjectExecuteAction extends Action {
 
@@ -30,7 +34,7 @@ public class TestListSubjectExecuteAction extends Action {
         Teacher teacher = (Teacher) session.getAttribute("user");
         ClassNumDao classNumDao = new ClassNumDao();
         SubjectDao subjectDao = new SubjectDao();
-        TestDao testDao = new TestDao();
+        TestListSubjectDao testListSubjectDao = new TestListSubjectDao();
         LocalDate today = LocalDate.now();
         int year = today.getYear();
 
@@ -84,20 +88,19 @@ public class TestListSubjectExecuteAction extends Action {
         // 科目情報を取得
         Subject subject = subjectDao.get(f3);
 
-        // 成績一覧を取得（1回・2回それぞれ）
-        List<Test> tests1 = testDao.filter(teacher.getSchool(), entYear, f2, subject, 1);
-        List<Test> tests2 = testDao.filter(teacher.getSchool(), entYear, f2, subject, 2);
+        // 科目別成績一覧を取得（TestListSubjectDao で1回のDB呼び出しにまとめる）
+        List<TestListSubject> testListSubjects =
+            testListSubjectDao.filter(entYear, f2, subject, teacher.getSchool());
 
         // 学生が存在しない場合
-        if (tests1.isEmpty()) {
+        if (testListSubjects.isEmpty()) {
             req.setAttribute("errorMsg", "学生情報が存在しませんでした。");
             req.getRequestDispatcher("test_list.jsp").forward(req, res);
             return;
         }
 
         // レスポンス値をセット 6
-        req.setAttribute("tests1", tests1);
-        req.setAttribute("tests2", tests2);
+        req.setAttribute("testListSubjects", testListSubjects);
         req.setAttribute("subject", subject);
         req.setAttribute("entYear", entYear);
 

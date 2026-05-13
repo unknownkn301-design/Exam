@@ -6,14 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import bean.Subject;
 import bean.Student;
+import bean.Subject;
 import bean.Teacher;
-import bean.Test;
+import bean.TestListStudent;
 import dao.ClassNumDao;
 import dao.StudentDao;
 import dao.SubjectDao;
-import dao.TestDao;
+import dao.TestListStudentDao;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -22,6 +22,9 @@ import tool.Action;
 /**
  * 成績参照アクション（学生番号検索 / 初期表示）
  * URL: TestList.action
+ *
+ * <p>リファクタリング: TestDao の直接利用を廃止し、
+ * {@link TestListStudentDao} + {@link bean.TestListStudent} を使用するよう変更。
  */
 public class TestListAction extends Action {
 
@@ -32,7 +35,7 @@ public class TestListAction extends Action {
         HttpSession session = req.getSession();
         Teacher teacher = (Teacher) session.getAttribute("user");
         StudentDao studentDao = new StudentDao();
-        TestDao scoreDao = new TestDao();
+        TestListStudentDao testListStudentDao = new TestListStudentDao();
         ClassNumDao classNumDao = new ClassNumDao();
         SubjectDao subjectDao = new SubjectDao();
         Map<String, String> errors = new HashMap<>();
@@ -52,7 +55,7 @@ public class TestListAction extends Action {
         }
 
         // ビジネスロジック 4 - 学生番号検索
-        List<Test> scores = null;
+        List<TestListStudent> scores = null;
         Student selectedStudent = null;
 
         if (studentNo != null && !studentNo.trim().isEmpty()) {
@@ -60,7 +63,8 @@ public class TestListAction extends Action {
             if (selectedStudent == null) {
                 errors.put("student_no", "指定された学生が存在しません");
             } else {
-                scores = scoreDao.filter(selectedStudent, teacher.getSchool());
+                // TestListStudentDao を使って学生別成績を取得
+                scores = testListStudentDao.filter(selectedStudent, teacher.getSchool());
             }
         }
 
